@@ -114,7 +114,7 @@ export function PokemonDetails({ pokemon }: PokemonDetailsProps) {
 
         {/* Enriched Hero Showcase Stage */}
         <div
-          className={`relative rounded-3xl p-6 sm:p-10 border ${colorTheme.border} ${colorTheme.bg} shadow-2xl overflow-hidden`}
+          className={`relative rounded-3xl p-4 sm:p-8 md:p-10 border ${colorTheme.border} ${colorTheme.bg} shadow-2xl overflow-hidden`}
         >
           {/* Background Watermark Pokeball */}
           <div className="absolute -right-10 -bottom-10 text-white/10 pointer-events-none rotate-12">
@@ -130,30 +130,30 @@ export function PokemonDetails({ pokemon }: PokemonDetailsProps) {
             </div>
           )}
 
-          <div className="relative z-10 grid grid-cols-12 items-center gap-8">
+          <div className="relative z-10 grid grid-cols-12 items-center gap-6 sm:gap-8">
             {/* Left Column: Info, Badges & Combat Mini Stats */}
-            <div className="col-span-12 lg:col-span-6 space-y-5">
+            <div className="col-span-12 lg:col-span-6 space-y-4 sm:space-y-5">
               <div className="flex items-center gap-2.5">
-                <span className="px-3 py-1 rounded-full bg-black/40 backdrop-blur-md text-xs font-black text-white/90 border border-white/20 shadow-sm">
+                <span className="px-3 py-1 rounded-full bg-black/40 backdrop-blur-md text-[11px] sm:text-xs font-black text-white/90 border border-white/20 shadow-sm">
                   {pokemon.species?.genus || "Pokémon"}
                 </span>
-                <span className="px-3 py-1 rounded-full bg-black/40 backdrop-blur-md text-xs font-black text-white/70 border border-white/20 tracking-widest shadow-sm">
+                <span className="px-3 py-1 rounded-full bg-black/40 backdrop-blur-md text-[11px] sm:text-xs font-black text-white/70 border border-white/20 tracking-widest shadow-sm">
                   {formattedId}
                 </span>
               </div>
 
-              <h1 className="text-4xl sm:text-6xl font-black text-white tracking-tight drop-shadow-xl leading-none">
+              <h1 className="text-3xl sm:text-5xl md:text-6xl font-black text-white tracking-tight drop-shadow-xl leading-none">
                 {formattedName}
               </h1>
 
               {/* Type Badges */}
-              <div className="flex flex-wrap gap-2.5">
+              <div className="flex flex-wrap gap-2">
                 {pokemon.types.map((t) => {
                   const typeTheme = DRIBBBLE_TYPE_COLORS[t.type.name.toLowerCase()] || colorTheme;
                   return (
                     <span
                       key={t.type.name}
-                      className={`px-4 py-1.5 text-xs font-black tracking-wider uppercase rounded-full shadow-lg ${typeTheme.badgeBg}`}
+                      className={`px-3.5 py-1 sm:px-4 sm:py-1.5 text-[11px] sm:text-xs font-black tracking-wider uppercase rounded-full shadow-lg ${typeTheme.badgeBg}`}
                     >
                       {formatPokemonName(t.type.name)}
                     </span>
@@ -163,60 +163,60 @@ export function PokemonDetails({ pokemon }: PokemonDetailsProps) {
 
               {/* Pokédex Description Quote */}
               {pokemon.species?.flavorText && (
-                <p className="text-xs sm:text-sm text-white/90 font-medium italic line-clamp-2 bg-black/30 backdrop-blur-md px-4 py-2.5 rounded-2xl border border-white/15 shadow-inner">
+                <p className="text-xs sm:text-sm text-white/90 font-medium italic line-clamp-2 bg-black/30 backdrop-blur-md px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-2xl border border-white/15 shadow-inner">
                   "{pokemon.species.flavorText}"
                 </p>
               )}
 
-              {/* Physical Attributes Badges (Fills empty card space) */}
-              <div className="grid grid-cols-3 gap-2.5 pt-1">
-                <div className="p-3 rounded-2xl bg-black/35 backdrop-blur-md border border-white/15 text-center shadow-sm">
-                  <div className="text-[10px] font-black uppercase text-white/60 tracking-wider">Height</div>
-                  <div className="text-sm font-black text-white">{heightMeters} m</div>
+              {/* Physical Attributes Badges (Fully Responsive Grid) */}
+              <div className="grid grid-cols-3 gap-1.5 sm:gap-2.5 pt-1 min-w-0">
+                <div className="p-2 sm:p-3 rounded-2xl bg-black/35 backdrop-blur-md border border-white/15 text-center shadow-sm min-w-0 overflow-hidden">
+                  <div className="text-[9px] sm:text-[10px] font-black uppercase text-white/60 tracking-wider truncate">Height</div>
+                  <div className="text-xs sm:text-sm font-black text-white truncate">{heightMeters} m</div>
                 </div>
-                <div className="p-3 rounded-2xl bg-black/35 backdrop-blur-md border border-white/15 text-center shadow-sm">
-                  <div className="text-[10px] font-black uppercase text-white/60 tracking-wider">Weight</div>
-                  <div className="text-sm font-black text-white">{weightKg} kg</div>
+                <div className="p-2 sm:p-3 rounded-2xl bg-black/35 backdrop-blur-md border border-white/15 text-center shadow-sm min-w-0 overflow-hidden">
+                  <div className="text-[9px] sm:text-[10px] font-black uppercase text-white/60 tracking-wider truncate">Weight</div>
+                  <div className="text-xs sm:text-sm font-black text-white truncate">{weightKg} kg</div>
                 </div>
-                <div className="p-3 rounded-2xl bg-black/35 backdrop-blur-md border border-white/15 text-center shadow-sm">
-                  <div className="text-[10px] font-black uppercase text-white/60 tracking-wider">Catch Rate</div>
-                  <div className="text-sm font-black text-white">{pokemon.species?.captureRate || "N/A"}</div>
+                <div className="p-2 sm:p-3 rounded-2xl bg-black/35 backdrop-blur-md border border-white/15 text-center shadow-sm min-w-0 overflow-hidden">
+                  <div className="text-[9px] sm:text-[10px] font-black uppercase text-white/60 tracking-wider truncate">Catch Rate</div>
+                  <div className="text-xs sm:text-sm font-black text-white truncate">{pokemon.species?.captureRate || "N/A"}</div>
                 </div>
               </div>
 
-              {/* Combat Preview Mini Bars */}
-              <div className="p-4 rounded-2xl bg-black/40 backdrop-blur-md border border-white/15 space-y-2 shadow-inner">
+              {/* Combat Preview Mini Bars (Responsive 1/2 Column) */}
+              <div className="p-3 sm:p-4 rounded-2xl bg-black/40 backdrop-blur-md border border-white/15 space-y-2.5 shadow-inner min-w-0 overflow-hidden">
                 <div className="text-xs font-black uppercase tracking-wider text-white/90 flex items-center justify-between">
                   <span>Combat Preview</span>
                   <span className="text-[10px] text-white/60 font-bold">Base Stats</span>
                 </div>
-                <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-xs font-bold text-white/95">
-                  <div className="flex items-center justify-between gap-2">
-                    <span className="text-white/70">HP</span>
-                    <span className="font-extrabold">{hpStat}</span>
-                    <div className="w-16 h-2 bg-black/40 rounded-full overflow-hidden">
-                      <div className="h-full bg-emerald-400 rounded-full" style={{ width: `${Math.min(100, (hpStat / 180) * 100)}%` }} />
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-2 text-xs font-bold text-white/95">
+                  <div className="flex items-center gap-2 min-w-0">
+                    <span className="text-white/70 w-8 shrink-0">HP</span>
+                    <span className="font-extrabold w-8 text-right shrink-0">{hpStat}</span>
+                    <div className="flex-1 h-2 bg-black/40 rounded-full overflow-hidden min-w-0">
+                      <div className="h-full bg-emerald-400 rounded-full transition-all duration-500" style={{ width: `${Math.min(100, (hpStat / 180) * 100)}%` }} />
                     </div>
                   </div>
-                  <div className="flex items-center justify-between gap-2">
-                    <span className="text-white/70">ATK</span>
-                    <span className="font-extrabold">{atkStat}</span>
-                    <div className="w-16 h-2 bg-black/40 rounded-full overflow-hidden">
-                      <div className="h-full bg-rose-400 rounded-full" style={{ width: `${Math.min(100, (atkStat / 180) * 100)}%` }} />
+                  <div className="flex items-center gap-2 min-w-0">
+                    <span className="text-white/70 w-8 shrink-0">ATK</span>
+                    <span className="font-extrabold w-8 text-right shrink-0">{atkStat}</span>
+                    <div className="flex-1 h-2 bg-black/40 rounded-full overflow-hidden min-w-0">
+                      <div className="h-full bg-rose-400 rounded-full transition-all duration-500" style={{ width: `${Math.min(100, (atkStat / 180) * 100)}%` }} />
                     </div>
                   </div>
-                  <div className="flex items-center justify-between gap-2">
-                    <span className="text-white/70">DEF</span>
-                    <span className="font-extrabold">{defStat}</span>
-                    <div className="w-16 h-2 bg-black/40 rounded-full overflow-hidden">
-                      <div className="h-full bg-blue-400 rounded-full" style={{ width: `${Math.min(100, (defStat / 180) * 100)}%` }} />
+                  <div className="flex items-center gap-2 min-w-0">
+                    <span className="text-white/70 w-8 shrink-0">DEF</span>
+                    <span className="font-extrabold w-8 text-right shrink-0">{defStat}</span>
+                    <div className="flex-1 h-2 bg-black/40 rounded-full overflow-hidden min-w-0">
+                      <div className="h-full bg-blue-400 rounded-full transition-all duration-500" style={{ width: `${Math.min(100, (defStat / 180) * 100)}%` }} />
                     </div>
                   </div>
-                  <div className="flex items-center justify-between gap-2">
-                    <span className="text-white/70">SPD</span>
-                    <span className="font-extrabold">{spdStat}</span>
-                    <div className="w-16 h-2 bg-black/40 rounded-full overflow-hidden">
-                      <div className="h-full bg-amber-300 rounded-full" style={{ width: `${Math.min(100, (spdStat / 180) * 100)}%` }} />
+                  <div className="flex items-center gap-2 min-w-0">
+                    <span className="text-white/70 w-8 shrink-0">SPD</span>
+                    <span className="font-extrabold w-8 text-right shrink-0">{spdStat}</span>
+                    <div className="flex-1 h-2 bg-black/40 rounded-full overflow-hidden min-w-0">
+                      <div className="h-full bg-amber-300 rounded-full transition-all duration-500" style={{ width: `${Math.min(100, (spdStat / 180) * 100)}%` }} />
                     </div>
                   </div>
                 </div>
