@@ -1,25 +1,27 @@
 # ⚡ Pokemon Explorer (Next.js & PokeAPI)
 
-A modern, responsive, and visually appealing **Pokemon Explorer** web application built with **Next.js 15 (App Router)**, **TypeScript**, and **Tailwind CSS**, powered by the **PokeAPI**.
+A modern, responsive, and visually stunning **Pokemon Explorer** web application built with **Next.js 16 (App Router)**, **TypeScript**, **Tailwind CSS**, and **Google Fonts (Outfit & Space Grotesk)**, powered by the **PokeAPI**.
 
 ---
 
 ## 🌟 Key Features
 
-- 🏠 **Homepage Grid**: Displays a responsive grid of Pokemon cards featuring high-resolution artwork, ID numbers, names, and color-coded type badges.
-- 🔍 **Real-Time Search**: Instant search filtering by Pokemon name or ID.
+- 🏠 **Homepage Grid**: Displays a responsive grid of 3D holographic Pokemon cards with mouse-tilt perspective, high-resolution artwork, ID numbers, names, and color-coded type badges.
+- 🔍 **Real-Time Search & Type Filtering**: Instant search filtering by Pokemon name or ID with shortcut key listener (`/`), plus elemental type filter badges.
 - ⚡ **Dynamic Detail Routes**: Dynamic routing (`/pokemon/[id]`) for individual Pokemon detail pages.
-- 📊 **Detailed Stats & Info**: Displays HP, Attack, Defense, Sp. Atk, Sp. Def, and Speed base stats with animated progress bars, physical attributes (height, weight), abilities (including hidden status), and move sets.
-- 🚀 **Performance Optimized**: Uses Server-Side Rendering (SSR), static site generation for top routes (`generateStaticParams`), and fetch caching.
-- 📱 **Fully Responsive**: Optimized for desktop, tablet, and mobile displays.
+- 📊 **Detailed Stats & Info**: Displays HP, Attack, Defense, Sp. Atk, Sp. Def, and Speed base stats with animated progress bars, physical attributes (height, weight), abilities (including hidden status), movesets, and interactive evolution chain flow.
+- ✨ **Shiny Form Toggle**: Interactive Shiny artwork toggle on detail pages.
+- 🚀 **Performance Optimized**: Uses Static Site Generation (SSG) with `generateStaticParams` for top routes, Server-Side Rendering (SSR), `<Suspense>` streaming, and fetch caching.
+- 📱 **Fully Responsive & Dark Mode Theme**: Deep atmospheric workspace background with neon gradient accents optimized for mobile, tablet, and desktop displays.
 
 ---
 
 ## 🛠️ Tech Stack
 
-- **Framework**: [Next.js 15 (App Router)](https://nextjs.org/)
+- **Framework**: [Next.js 16 (App Router & Turbopack)](https://nextjs.org/)
 - **Language**: [TypeScript](https://www.typescriptlang.org/)
 - **Styling**: [Tailwind CSS v4](https://tailwindcss.com/)
+- **Typography**: Google Fonts (`Outfit` & `Space Grotesk`)
 - **Data Source**: [PokeAPI](https://pokeapi.co/)
 
 ---
@@ -29,22 +31,22 @@ A modern, responsive, and visually appealing **Pokemon Explorer** web applicatio
 ```text
 src/
 ├── app/                    # Next.js App Router routes & layouts
-│   ├── globals.css         # Base styles & Tailwind setup
-│   ├── layout.tsx          # Root layout
-│   ├── page.tsx            # Homepage (SSR)
+│   ├── globals.css         # Base styles, 3D card perspective & Tailwind setup
+│   ├── layout.tsx          # Root layout with Outfit & Space Grotesk Google Fonts
+│   ├── page.tsx            # Homepage (SSR & SSG)
 │   └── pokemon/
 │       └── [id]/
 │           └── page.tsx    # Dynamic Pokemon Detail route (SSG / SSR)
 │
 ├── components/             # Reusable UI components
-│   ├── common/             # Common UI (Loading, ErrorMessage, Pagination)
-│   ├── pokemon/            # Pokemon UI (Card, Grid, Details, Stats, Abilities, Moves, Types)
-│   └── search/             # Search input component
+│   ├── common/             # Common UI (Loading, ErrorMessage, PokeballWatermark)
+│   ├── pokemon/            # Pokemon UI (Card, Grid, Details, Stats, About, Evolution, Moves, TypeFilter)
+│   └── search/             # Spotlight search input component
 │
 ├── lib/                    # API integration & Constants
 │   ├── api/
 │   │   └── pokeapi.ts      # Native fetch wrapper for PokeAPI
-│   └── constants.ts        # Elemental type color maps & defaults
+│   └── constants.ts        # Dual-gradient elemental type color maps
 │
 ├── types/                  # Strict TypeScript interface definitions
 │   └── pokemon.ts
@@ -66,7 +68,7 @@ src/
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-username/pokemon-explorer.git
+   git clone https://github.com/AJAY9821/pokemon-explorer.git
    cd pokemon-explorer
    ```
 
