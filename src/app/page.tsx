@@ -6,7 +6,7 @@ import { PokeballWatermark } from "@/components/common/PokeballWatermark";
 
 export default async function HomePage() {
   try {
-    const { pokemonList } = await fetchPokemonList(60, 0);
+    const { pokemonList } = await fetchPokemonList(151, 0);
 
     return (
       <main className="relative min-h-screen bg-[#080C14] text-slate-100 py-10 px-4 sm:px-6 lg:px-8 overflow-hidden bg-grid-pattern">

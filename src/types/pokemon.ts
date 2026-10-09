@@ -72,6 +72,10 @@ export interface PokemonDetail {
     front_default: string;
     front_shiny?: string;
     other?: {
+      showdown?: {
+        front_default?: string;
+        front_shiny?: string;
+      };
       "official-artwork"?: {
         front_default: string;
         front_shiny?: string;
@@ -94,5 +98,6 @@ export interface PokemonCardData {
   id: number;
   name: string;
   image: string;
+  animatedImage?: string;
   types: string[];
 }

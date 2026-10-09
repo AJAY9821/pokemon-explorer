@@ -167,3 +167,53 @@ export async function fetchEvolutionChain(url: string): Promise<EvolutionNode[]>
   await parseChainNode(data.chain);
   return nodes;
 }
+
+/**
+ * Fetch Pokémon list filtered by elemental type directly from PokeAPI
+ */
+export async function fetchPokemonByType(typeName: string): Promise<PokemonCardData[]> {
+  try {
+    const res = await fetch(`${POKEAPI_BASE_URL}/type/${typeName.toLowerCase()}`, {
+      next: { revalidate: 3600 },
+    });
+
+    if (!res.ok) return [];
+
+    const data = await res.json();
+    const pokemonEntries: Array<{ pokemon: { name: string; url: string } }> = data.pokemon || [];
+
+    // Limit to top 36 entries for crisp performance
+    const topEntries = pokemonEntries.slice(0, 36);
+
+    const listPromises = topEntries.map(async (entry) => {
+      const urlParts = entry.pokemon.url.split("/").filter(Boolean);
+      const id = parseInt(urlParts[urlParts.length - 1], 10);
+      try {
+        const detail = await fetchPokemonDetailBasic(entry.pokemon.name);
+        return {
+          id: detail.id,
+          name: detail.name,
+          image:
+            detail.sprites.other?.["official-artwork"]?.front_default ||
+            detail.sprites.other?.home?.front_default ||
+            detail.sprites.front_default ||
+            "",
+          animatedImage: detail.sprites.other?.showdown?.front_default,
+          types: detail.types.map((t) => t.type.name),
+        };
+      } catch {
+        return {
+          id,
+          name: entry.pokemon.name,
+          image: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`,
+          types: [typeName],
+        };
+      }
+    });
+
+    return await Promise.all(listPromises);
+  } catch (error) {
+    console.error("Error in fetchPokemonByType:", error);
+    return [];
+  }
+}

@@ -1,11 +1,11 @@
 "use client";
 
-import React, { useState, useMemo, useTransition } from "react";
+import React, { useState, useMemo, useTransition, useEffect } from "react";
 import { PokemonCardData } from "@/types/pokemon";
 import { SearchBar } from "@/components/search/SearchBar";
 import { TypeFilterBar } from "./TypeFilterBar";
 import { PokemonGrid } from "./PokemonGrid";
-import { fetchPokemonDetail } from "@/lib/api/pokeapi";
+import { fetchPokemonDetail, fetchPokemonByType } from "@/lib/api/pokeapi";
 import { Loading } from "@/components/common/Loading";
 
 interface PokemonExplorerViewProps {
@@ -16,12 +16,13 @@ export function PokemonExplorerView({ initialPokemonList }: PokemonExplorerViewP
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedType, setSelectedType] = useState<string | null>(null);
   const [searchedPokemon, setSearchedPokemon] = useState<PokemonCardData | null>(null);
-  const [isSearchingApi, setIsSearchingApi] = useState(false);
+  const [typeFetchedList, setTypeFetchedList] = useState<PokemonCardData[] | null>(null);
+  const [isLoadingApi, setIsLoadingApi] = useState(false);
   const [searchError, setSearchError] = useState<string | null>(null);
   const [, startTransition] = useTransition();
 
-  // Filter list by name and selected type
-  const filteredList = useMemo(() => {
+  // Filter local list by name and selected type
+  const localFilteredList = useMemo(() => {
     return initialPokemonList.filter((p) => {
       const matchesSearch =
         !searchQuery.trim() ||
@@ -34,6 +35,35 @@ export function PokemonExplorerView({ initialPokemonList }: PokemonExplorerViewP
       return matchesSearch && matchesType;
     });
   }, [initialPokemonList, searchQuery, selectedType]);
+
+  // Dynamically fetch from PokeAPI if selected type has 0 local matches or when type filter is clicked
+  useEffect(() => {
+    if (!selectedType) {
+      setTypeFetchedList(null);
+      return;
+    }
+
+    // Check if local list has matching Pokemon for this type
+    const localMatches = initialPokemonList.filter((p) =>
+      p.types.some((t) => t.toLowerCase() === selectedType.toLowerCase())
+    );
+
+    if (localMatches.length === 0) {
+      startTransition(async () => {
+        setIsLoadingApi(true);
+        try {
+          const typeResults = await fetchPokemonByType(selectedType);
+          setTypeFetchedList(typeResults);
+        } catch {
+          setTypeFetchedList([]);
+        } finally {
+          setIsLoadingApi(false);
+        }
+      });
+    } else {
+      setTypeFetchedList(null);
+    }
+  }, [selectedType, initialPokemonList]);
 
   const handleSearchChange = (query: string) => {
     setSearchQuery(query);
@@ -49,7 +79,7 @@ export function PokemonExplorerView({ initialPokemonList }: PokemonExplorerViewP
 
     if (!matchInList && trimmedQuery.length >= 3) {
       startTransition(async () => {
-        setIsSearchingApi(true);
+        setIsLoadingApi(true);
         try {
           const detail = await fetchPokemonDetail(trimmedQuery);
           const cardData: PokemonCardData = {
@@ -60,6 +90,7 @@ export function PokemonExplorerView({ initialPokemonList }: PokemonExplorerViewP
               detail.sprites.other?.home?.front_default ||
               detail.sprites.front_default ||
               "",
+            animatedImage: detail.sprites.other?.showdown?.front_default,
             types: detail.types.map((t) => t.type.name),
           };
           setSearchedPokemon(cardData);
@@ -68,13 +99,17 @@ export function PokemonExplorerView({ initialPokemonList }: PokemonExplorerViewP
           setSearchedPokemon(null);
           setSearchError(`No Pokemon found matching "${query}"`);
         } finally {
-          setIsSearchingApi(false);
+          setIsLoadingApi(false);
         }
       });
     }
   };
 
-  const displayList = searchedPokemon ? [searchedPokemon] : filteredList;
+  const displayList = searchedPokemon
+    ? [searchedPokemon]
+    : typeFetchedList !== null
+    ? typeFetchedList
+    : localFilteredList;
 
   return (
     <div className="space-y-6">
@@ -92,17 +127,17 @@ export function PokemonExplorerView({ initialPokemonList }: PokemonExplorerViewP
       />
 
       {/* Loading indicator */}
-      {isSearchingApi && <Loading />}
+      {isLoadingApi && <Loading />}
 
       {/* Error state */}
-      {searchError && !isSearchingApi && (
+      {searchError && !isLoadingApi && (
         <div className="py-10 text-center text-red-500 font-semibold text-lg">
           {searchError}
         </div>
       )}
 
       {/* Pokemon Grid */}
-      {!isSearchingApi && (
+      {!isLoadingApi && (
         <PokemonGrid
           pokemonList={displayList}
           emptyMessage={`No Pokemon found matching your criteria.`}
