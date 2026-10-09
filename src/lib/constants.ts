@@ -1,4 +1,4 @@
-export const POKEAPI_BASE_URL = "https://pokeapi.co/api/v2";
+export const POKEAPI_BASE_URL = process.env.NEXT_PUBLIC_POKEAPI_BASE_URL || "https://pokeapi.co/api/v2";
 export const DEFAULT_PAGE_LIMIT = 36;
 
 export interface DribbbleTypeColor {
