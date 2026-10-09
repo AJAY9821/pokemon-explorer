@@ -72,11 +72,10 @@ export function PokemonDetails({ pokemon }: PokemonDetailsProps) {
             {/* Shiny Sprite Toggle Button */}
             <button
               onClick={() => setIsShiny(!isShiny)}
-              className={`px-3.5 py-1.5 rounded-2xl text-xs font-black tracking-wider uppercase flex items-center gap-2 transition-all duration-300 border ${
-                isShiny
+              className={`px-3.5 py-1.5 rounded-2xl text-xs font-black tracking-wider uppercase flex items-center gap-2 transition-all duration-300 border ${isShiny
                   ? "bg-amber-500/20 text-amber-300 border-amber-400/50 shadow-[0_0_15px_rgba(245,158,11,0.4)]"
                   : "bg-slate-900/80 text-slate-400 border-slate-700/60 hover:text-slate-200"
-              }`}
+                }`}
             >
               <span className={`text-base ${isShiny ? "animate-spin" : ""}`}>✨</span>
               <span>{isShiny ? "Shiny On" : "Normal"}</span>
@@ -153,11 +152,10 @@ export function PokemonDetails({ pokemon }: PokemonDetailsProps) {
                 <button
                   key={tab}
                   onClick={() => setActiveTab(tab)}
-                  className={`px-6 py-2.5 rounded-2xl text-xs font-black uppercase tracking-wider transition-all duration-300 whitespace-nowrap ${
-                    isActive
+                  className={`px-6 py-2.5 rounded-2xl text-xs font-black uppercase tracking-wider transition-all duration-300 whitespace-nowrap ${isActive
                       ? "bg-blue-600 text-white shadow-lg shadow-blue-500/30 scale-105"
                       : "text-slate-400 hover:text-slate-200 hover:bg-slate-800/60"
-                  }`}
+                    }`}
                 >
                   {tab}
                 </button>

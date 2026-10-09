@@ -1,9 +1,22 @@
 import type { Metadata } from "next";
+import { Outfit, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 
+const outfit = Outfit({
+  subsets: ["latin"],
+  variable: "--font-outfit",
+  display: "swap",
+});
+
+const spaceGrotesk = Space_Grotesk({
+  subsets: ["latin"],
+  variable: "--font-space-grotesk",
+  display: "swap",
+});
+
 export const metadata: Metadata = {
-  title: "Pokemon Explorer",
-  description: "Explore Pokemon details, stats, abilities, and dynamic data powered by PokeAPI.",
+  title: "Pokemon Explorer | 3D Interactive Pokédex",
+  description: "Explore Pokemon details, stats, abilities, and dynamic data powered by PokeAPI with 3D holographic cards.",
 };
 
 export default function RootLayout({
@@ -12,10 +25,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className="min-h-screen bg-slate-50 text-slate-900 antialiased dark:bg-slate-900 dark:text-slate-100">
+    <html lang="en" className={`${outfit.variable} ${spaceGrotesk.variable}`}>
+      <body className="min-h-screen bg-[#080C14] text-slate-100 antialiased font-sans">
         {children}
       </body>
     </html>
   );
 }
+
