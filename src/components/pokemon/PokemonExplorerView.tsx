@@ -104,10 +104,12 @@ export function PokemonExplorerView({ initialPokemonList }: PokemonExplorerViewP
       ? typeFetchedList
       : activeDataset;
 
+    // 1. Filter by favorites if Favorites mode is active
     if (showFavoritesOnly) {
       list = list.filter((p) => favorites.includes(p.id));
     }
 
+    // 2. Filter by search query AND selected elemental type
     return list.filter((p) => {
       const matchesSearch =
         !searchQuery.trim() ||
@@ -174,8 +176,64 @@ export function PokemonExplorerView({ initialPokemonList }: PokemonExplorerViewP
     setIsCompareOpen(true);
   };
 
+  const handleResetFilters = () => {
+    setSelectedType(null);
+    setShowFavoritesOnly(false);
+    setSearchQuery("");
+    setSelectedGen(null);
+  };
+
+  const handleSelectType = (type: string | null) => {
+    setSelectedType(type);
+  };
+
+  const isFiltered =
+    showFavoritesOnly || selectedType !== null || searchQuery.trim() !== "" || selectedGen !== null;
+
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
+      {/* Top Bar Navigation & Hero Title Header */}
+      <div className="relative pt-2">
+        {/* Top Left Navigation Button at Red Line Position */}
+        {isFiltered && (
+          <div className="sm:absolute sm:top-2 sm:left-0 z-20 mb-4 sm:mb-0 animate-fade-in">
+            <button
+              onClick={handleResetFilters}
+              className="group inline-flex items-center gap-2 px-4 py-2 rounded-2xl bg-slate-900/90 backdrop-blur-xl border border-slate-700/60 text-slate-300 hover:text-white hover:border-slate-500 transition-all shadow-lg text-xs font-black uppercase tracking-wider"
+            >
+              <svg
+                className="w-4 h-4 group-hover:-translate-x-1 transition-transform text-blue-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+              </svg>
+              <span>Back to Explorer</span>
+            </button>
+          </div>
+        )}
+
+        {/* Hero Section */}
+        <div className="text-center space-y-4 pt-2 max-w-3xl mx-auto">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-900/80 border border-slate-700/60 backdrop-blur-md shadow-inner text-xs font-bold text-blue-400 uppercase tracking-widest">
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
+            Interactive 3D Pokédex Showcase
+          </div>
+
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight text-white leading-tight">
+            Explore the <br className="hidden sm:inline" />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-indigo-300 to-purple-400">
+              Pokémon Universe
+            </span>
+          </h1>
+
+          <p className="text-sm sm:text-base text-slate-400 font-medium leading-relaxed max-w-xl mx-auto">
+            Discover stats, elemental type match-ups, movesets, and evolution chains with interactive 3D holographic cards.
+          </p>
+        </div>
+      </div>
+
       {/* Search Bar */}
       <SearchBar
         searchQuery={searchQuery}
@@ -186,7 +244,7 @@ export function PokemonExplorerView({ initialPokemonList }: PokemonExplorerViewP
       {/* Filter Control Bar */}
       <TypeFilterBar
         selectedType={selectedType}
-        onSelectType={setSelectedType}
+        onSelectType={handleSelectType}
         showFavoritesOnly={showFavoritesOnly}
         onToggleFavoritesOnly={() => setShowFavoritesOnly(!showFavoritesOnly)}
         selectedGen={selectedGen}
@@ -209,10 +267,13 @@ export function PokemonExplorerView({ initialPokemonList }: PokemonExplorerViewP
           pokemonList={filteredList}
           emptyMessage={
             showFavoritesOnly
-              ? "You haven't added any Pokémon to your favorites yet! Click the ❤️ heart icon on any card to save it."
+              ? selectedType
+                ? `You don't have any favorited ${selectedType.toUpperCase()} Pokémon yet!`
+                : "You haven't added any Pokémon to your favorites yet! Click the ❤️ heart icon on any Pokémon card to save it."
               : "No Pokémon found matching your criteria."
           }
           onCompare={handleOpenCompare}
+          onResetView={handleResetFilters}
         />
       )}
 

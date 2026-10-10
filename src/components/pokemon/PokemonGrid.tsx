@@ -6,23 +6,38 @@ interface PokemonGridProps {
   pokemonList: PokemonCardData[];
   emptyMessage?: string;
   onCompare?: (id: number) => void;
+  onResetView?: () => void;
 }
 
 export function PokemonGrid({
   pokemonList,
   emptyMessage = "No Pokémon found matching your search.",
   onCompare,
+  onResetView,
 }: PokemonGridProps) {
   if (!pokemonList || pokemonList.length === 0) {
     return (
-      <div className="py-20 text-center glass-panel rounded-3xl p-8 max-w-lg mx-auto border border-slate-800 space-y-3">
-        <div className="text-4xl">🔍</div>
-        <p className="text-lg font-bold text-slate-300">
+      <div className="py-16 text-center glass-panel rounded-3xl p-8 max-w-lg mx-auto border border-slate-800 space-y-4 shadow-xl">
+        <div className="text-4xl">❤️</div>
+        <p className="text-base font-bold text-slate-300">
           {emptyMessage}
         </p>
-        <p className="text-xs text-slate-500 font-medium">
-          Try adjusting your search query or selecting a different elemental type filter.
-        </p>
+        {onResetView && (
+          <button
+            onClick={onResetView}
+            className="group inline-flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-slate-900/90 backdrop-blur-xl border border-slate-700/60 text-slate-300 hover:text-white hover:border-slate-500 transition-all shadow-lg text-xs font-black uppercase tracking-wider"
+          >
+            <svg
+              className="w-4 h-4 group-hover:-translate-x-1 transition-transform text-blue-400"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+            <span>Back to Explorer</span>
+          </button>
+        )}
       </div>
     );
   }
@@ -35,4 +50,3 @@ export function PokemonGrid({
     </div>
   );
 }
-
