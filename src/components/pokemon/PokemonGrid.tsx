@@ -5,11 +5,13 @@ import { PokemonCard } from "./PokemonCard";
 interface PokemonGridProps {
   pokemonList: PokemonCardData[];
   emptyMessage?: string;
+  onCompare?: (id: number) => void;
 }
 
 export function PokemonGrid({
   pokemonList,
   emptyMessage = "No Pokémon found matching your search.",
+  onCompare,
 }: PokemonGridProps) {
   if (!pokemonList || pokemonList.length === 0) {
     return (
@@ -28,8 +30,9 @@ export function PokemonGrid({
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 sm:gap-7">
       {pokemonList.map((pokemon) => (
-        <PokemonCard key={pokemon.id} pokemon={pokemon} />
+        <PokemonCard key={pokemon.id} pokemon={pokemon} onCompare={onCompare} />
       ))}
     </div>
   );
 }
+

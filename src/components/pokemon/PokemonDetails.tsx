@@ -11,16 +11,24 @@ import { PokemonAboutTab } from "./PokemonAboutTab";
 import { PokemonStats } from "./PokemonStats";
 import { PokemonEvolutionTab } from "./PokemonEvolutionTab";
 import { PokemonMoves } from "./PokemonMoves";
+import { PokemonWeaknessTab } from "./PokemonWeaknessTab";
+import { AudioCryButton } from "@/components/common/AudioCryButton";
+import { PokemonCompareModal } from "./PokemonCompareModal";
+import { useFavorites } from "@/hooks/useFavorites";
 
 interface PokemonDetailsProps {
   pokemon: PokemonDetail;
 }
 
-type TabType = "about" | "stats" | "evolution" | "moves";
+type TabType = "about" | "stats" | "weaknesses" | "evolution" | "moves";
 
 export function PokemonDetails({ pokemon }: PokemonDetailsProps) {
   const [activeTab, setActiveTab] = useState<TabType>("about");
   const [isShiny, setIsShiny] = useState(false);
+  const [isCompareOpen, setIsCompareOpen] = useState(false);
+
+  const { isFavorite, toggleFavorite } = useFavorites();
+  const favorite = isFavorite(pokemon.id);
 
   const primaryType = pokemon.types[0]?.type.name.toLowerCase() || "normal";
   const colorTheme = DRIBBBLE_TYPE_COLORS[primaryType] || DRIBBBLE_TYPE_COLORS.normal;
@@ -67,52 +75,80 @@ export function PokemonDetails({ pokemon }: PokemonDetailsProps) {
     : "animate-float";
 
   return (
-    <div className="relative min-h-screen bg-[#080C14] text-slate-100 py-6 px-3 sm:px-6 lg:px-8 bg-grid-pattern">
+    <div className="relative w-full min-h-screen bg-[#080C14] text-slate-100 py-6 sm:py-8 px-4 sm:px-6 lg:px-8 bg-grid-pattern overflow-x-hidden">
       {/* Dynamic Background Ambient Orbs */}
       <div
         className="absolute top-10 left-1/2 -translate-x-1/2 w-[550px] h-[550px] rounded-full blur-[150px] opacity-40 pointer-events-none"
         style={{ backgroundColor: colorTheme.hex }}
       />
 
+
       <div className="relative z-10 max-w-5xl mx-auto space-y-8">
-        {/* Top Header Controls (Back Button, Shiny Toggle & ID) */}
-        <div className="flex items-center justify-between">
+        {/* Top Header Controls (Back Button, Cry Button, Compare & Favorite) */}
+        <div className="flex flex-wrap items-center justify-between gap-3">
           <Link
             href="/"
-            className="group inline-flex items-center gap-2 px-4 py-2 rounded-2xl bg-slate-900/90 backdrop-blur-xl border border-slate-700/60 text-slate-300 hover:text-white hover:border-slate-500 transition-all shadow-lg"
+            className="group inline-flex items-center gap-2 px-4 py-2 rounded-2xl bg-slate-900/90 backdrop-blur-xl border border-slate-700/60 text-slate-300 hover:text-white hover:border-slate-500 transition-all shadow-lg text-xs font-black uppercase tracking-wider"
           >
             <svg
-              className="w-5 h-5 group-hover:-translate-x-1 transition-transform text-blue-400"
+              className="w-4 h-4 group-hover:-translate-x-1 transition-transform text-blue-400"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
             >
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
             </svg>
-            <span className="text-xs font-black tracking-wider uppercase">Back to Explorer</span>
+            <span>Back to Explorer</span>
           </Link>
 
-          <div className="flex items-center gap-3">
+          <div className="flex flex-wrap items-center gap-2.5">
+            {/* Audio Cry Button */}
+            <AudioCryButton pokemonId={pokemon.id} pokemonName={pokemon.name} size="md" />
+
+            {/* Compare Tool Trigger */}
+            <button
+              onClick={() => setIsCompareOpen(true)}
+              className="px-3.5 py-1.5 rounded-2xl bg-slate-900/90 border border-slate-700/60 text-slate-300 hover:text-white hover:border-slate-500 transition-all text-xs font-black uppercase tracking-wider flex items-center gap-1.5 shadow-md"
+            >
+              <span>⚔️</span>
+              <span>Compare</span>
+            </button>
+
             {/* Shiny Form Toggle */}
             <button
               onClick={() => setIsShiny(!isShiny)}
-              className={`px-3.5 py-1.5 rounded-2xl text-xs font-black tracking-wider uppercase flex items-center gap-2 transition-all duration-300 border ${
+              className={`px-3.5 py-1.5 rounded-2xl text-xs font-black tracking-wider uppercase flex items-center gap-1.5 transition-all duration-300 border ${
                 isShiny
                   ? "bg-amber-500/25 text-amber-300 border-amber-400/60 shadow-[0_0_18px_rgba(245,158,11,0.5)] scale-105"
                   : "bg-slate-900/90 text-slate-400 border-slate-700/60 hover:text-slate-200"
               }`}
             >
-              <span className={`text-base ${isShiny ? "animate-spin" : ""}`}>✨</span>
-              <span>{isShiny ? "Shiny On" : "Shiny Form"}</span>
+              <span className={`text-sm ${isShiny ? "animate-spin" : ""}`}>✨</span>
+              <span>{isShiny ? "Shiny On" : "Shiny"}</span>
             </button>
 
-            <span className="px-3.5 py-1.5 rounded-2xl text-xs font-black tracking-widest bg-slate-900/90 border border-slate-700/60 text-slate-300 shadow-inner">
+            {/* Favorite Heart Toggle */}
+            <button
+              onClick={() => toggleFavorite(pokemon.id)}
+              className={`p-2 rounded-2xl border transition-all ${
+                favorite
+                  ? "bg-rose-500/80 text-white border-rose-400 shadow-lg shadow-rose-500/40 scale-105"
+                  : "bg-slate-900/90 text-slate-400 border-slate-700/60 hover:text-rose-400"
+              }`}
+              title={favorite ? "Remove from Favorites" : "Add to Favorites"}
+            >
+              <svg className="w-4 h-4" fill={favorite ? "currentColor" : "none"} stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 016.364 0L12 7.636l1.318-1.318a4.5 4.5 0 116.364 6.364L12 21.364l-7.682-7.682a4.5 4.5 0 010-6.364z" />
+              </svg>
+            </button>
+
+            <span className="px-3 py-1.5 rounded-2xl text-xs font-black tracking-widest bg-slate-900/90 border border-slate-700/60 text-slate-300 shadow-inner">
               {formattedId}
             </span>
           </div>
         </div>
 
-        {/* Enriched Hero Showcase Stage */}
+        {/* Hero Showcase Stage */}
         <div
           className={`relative rounded-3xl p-4 sm:p-8 md:p-10 border ${colorTheme.border} ${colorTheme.bg} shadow-2xl overflow-hidden`}
         >
@@ -121,7 +157,7 @@ export function PokemonDetails({ pokemon }: PokemonDetailsProps) {
             <PokeballWatermark size={440} opacity={0.14} />
           </div>
 
-          {/* Elemental Flame Embers for Fire/Dragon/Flying */}
+          {/* Flame Embers */}
           {isFlyingOrDragonOrFire && (
             <div className="absolute inset-0 pointer-events-none overflow-hidden z-0">
               <div className="absolute bottom-4 left-1/3 w-3 h-3 rounded-full bg-orange-400/70 blur-xs animate-rise-ember-1" />
@@ -131,7 +167,6 @@ export function PokemonDetails({ pokemon }: PokemonDetailsProps) {
           )}
 
           <div className="relative z-10 grid grid-cols-12 items-center gap-6 sm:gap-8">
-            {/* Left Column: Info, Badges & Combat Mini Stats */}
             <div className="col-span-12 lg:col-span-6 space-y-4 sm:space-y-5">
               <div className="flex items-center gap-2.5">
                 <span className="px-3 py-1 rounded-full bg-black/40 backdrop-blur-md text-[11px] sm:text-xs font-black text-white/90 border border-white/20 shadow-sm">
@@ -161,14 +196,14 @@ export function PokemonDetails({ pokemon }: PokemonDetailsProps) {
                 })}
               </div>
 
-              {/* Pokédex Description Quote */}
+              {/* Pokédex Flavor Quote */}
               {pokemon.species?.flavorText && (
                 <p className="text-xs sm:text-sm text-white/90 font-medium italic line-clamp-2 bg-black/30 backdrop-blur-md px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-2xl border border-white/15 shadow-inner">
                   "{pokemon.species.flavorText}"
                 </p>
               )}
 
-              {/* Physical Attributes Badges (Fully Responsive Grid) */}
+              {/* Physical Attributes Badges */}
               <div className="grid grid-cols-3 gap-1.5 sm:gap-2.5 pt-1 min-w-0">
                 <div className="p-2 sm:p-3 rounded-2xl bg-black/35 backdrop-blur-md border border-white/15 text-center shadow-sm min-w-0 overflow-hidden">
                   <div className="text-[9px] sm:text-[10px] font-black uppercase text-white/60 tracking-wider truncate">Height</div>
@@ -184,7 +219,7 @@ export function PokemonDetails({ pokemon }: PokemonDetailsProps) {
                 </div>
               </div>
 
-              {/* Combat Preview Mini Bars (Responsive 1/2 Column) */}
+              {/* Combat Preview Mini Bars */}
               <div className="p-3 sm:p-4 rounded-2xl bg-black/40 backdrop-blur-md border border-white/15 space-y-2.5 shadow-inner min-w-0 overflow-hidden">
                 <div className="text-xs font-black uppercase tracking-wider text-white/90 flex items-center justify-between">
                   <span>Combat Preview</span>
@@ -223,17 +258,11 @@ export function PokemonDetails({ pokemon }: PokemonDetailsProps) {
               </div>
             </div>
 
-            {/* Right Column: Hero HD Artwork Stage in Motion */}
+            {/* Right Column: Dynamic Artwork */}
             <div className="col-span-12 lg:col-span-6 flex justify-center items-center relative py-6">
-              {/* Rotating Glowing Elemental Energy Ring */}
-              <div
-                className="absolute w-72 h-72 sm:w-84 sm:h-84 rounded-full border-2 border-dashed border-white/20 animate-rotate-aura pointer-events-none"
-              />
-
-              {/* Radial Shadow Drop */}
+              <div className="absolute w-72 h-72 sm:w-84 sm:h-84 rounded-full border-2 border-dashed border-white/20 animate-rotate-aura pointer-events-none" />
               <div className="absolute inset-0 bg-black/40 blur-2xl rounded-full scale-90 translate-y-6" />
 
-              {/* Dynamic Animated Motion Artwork */}
               <div className={`relative z-10 ${motionClass} flex items-center justify-center min-h-[260px]`}>
                 {activeImage ? (
                   <Image
@@ -259,19 +288,19 @@ export function PokemonDetails({ pokemon }: PokemonDetailsProps) {
         <div className="glass-panel rounded-3xl p-6 sm:p-8 shadow-2xl border border-slate-800">
           {/* Navigation Bar */}
           <div className="flex items-center justify-start sm:justify-center gap-2 border-b border-slate-800/80 pb-4 mb-6 overflow-x-auto scrollbar-none">
-            {(["about", "stats", "evolution", "moves"] as TabType[]).map((tab) => {
+            {(["about", "stats", "weaknesses", "evolution", "moves"] as TabType[]).map((tab) => {
               const isActive = activeTab === tab;
               return (
                 <button
                   key={tab}
                   onClick={() => setActiveTab(tab)}
-                  className={`px-6 py-2.5 rounded-2xl text-xs font-black uppercase tracking-wider transition-all duration-300 whitespace-nowrap ${
+                  className={`px-5 py-2.5 rounded-2xl text-xs font-black uppercase tracking-wider transition-all duration-300 whitespace-nowrap ${
                     isActive
                       ? "bg-blue-600 text-white shadow-lg shadow-blue-500/30 scale-105"
                       : "text-slate-400 hover:text-slate-200 hover:bg-slate-800/60"
                   }`}
                 >
-                  {tab}
+                  {tab === "weaknesses" ? "🛡️ Weaknesses" : tab}
                 </button>
               );
             })}
@@ -281,11 +310,23 @@ export function PokemonDetails({ pokemon }: PokemonDetailsProps) {
           <div className="pt-2">
             {activeTab === "about" && <PokemonAboutTab pokemon={pokemon} />}
             {activeTab === "stats" && <PokemonStats stats={pokemon.stats} />}
-            {activeTab === "evolution" && <PokemonEvolutionTab evolutionChain={pokemon.evolutionChain} />}
+            {activeTab === "weaknesses" && (
+              <PokemonWeaknessTab types={pokemon.types.map((t) => t.type.name)} />
+            )}
+            {activeTab === "evolution" && (
+              <PokemonEvolutionTab evolutionChain={pokemon.evolutionChain} />
+            )}
             {activeTab === "moves" && <PokemonMoves moves={pokemon.moves} limit={30} />}
           </div>
         </div>
       </div>
+
+      {/* Battle Comparison Modal */}
+      <PokemonCompareModal
+        isOpen={isCompareOpen}
+        onClose={() => setIsCompareOpen(false)}
+        pokemon1Id={pokemon.id}
+      />
     </div>
   );
 }

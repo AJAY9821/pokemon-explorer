@@ -86,6 +86,10 @@ export interface PokemonDetail {
       };
     };
   };
+  cries?: {
+    latest?: string;
+    legacy?: string;
+  };
   types: PokemonType[];
   abilities: PokemonAbility[];
   stats: PokemonStat[];
@@ -100,4 +104,6 @@ export interface PokemonCardData {
   image: string;
   animatedImage?: string;
   types: string[];
+  cryUrl?: string;
 }
+

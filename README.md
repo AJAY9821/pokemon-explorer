@@ -1,28 +1,32 @@
-# ⚡ Pokemon Explorer (Next.js & PokeAPI)
+# ⚡ Pokémon Explorer — Interview Showcase Edition
 
-A modern, responsive, and visually stunning **Pokemon Explorer** web application built with **Next.js 16 (App Router)**, **TypeScript**, **Tailwind CSS**, and **Google Fonts (Outfit & Space Grotesk)**, powered by the **PokeAPI**.
+A world-class, interactive **Pokémon Explorer** web application built with **Next.js 16 (App Router)**, **TypeScript**, **Tailwind CSS**, and **Google Fonts**, powered by the **PokeAPI**.
+
+Designed as a feature-complete take-home project for technical interviews, featuring 3D holographic tilt cards, audio cries, battle stat comparison, type weakness calculation, and persistent bookmarks.
 
 ---
 
-## 🌟 Key Features
+## 🌟 Key Standout Features
 
-- 🏠 **Homepage Grid**: Displays a responsive grid of 3D holographic Pokemon cards with mouse-tilt perspective, high-resolution artwork, ID numbers, names, and color-coded type badges.
-- 🔍 **Real-Time Search & Type Filtering**: Instant search filtering by Pokemon name or ID with shortcut key listener (`/`), plus elemental type filter badges.
-- ⚡ **Dynamic Detail Routes**: Dynamic routing (`/pokemon/[id]`) for individual Pokemon detail pages.
-- 📊 **Detailed Stats & Info**: Displays HP, Attack, Defense, Sp. Atk, Sp. Def, and Speed base stats with animated progress bars, physical attributes (height, weight), abilities (including hidden status), movesets, and interactive evolution chain flow.
-- ✨ **Shiny Form Toggle**: Interactive Shiny artwork toggle on detail pages.
-- 🚀 **Performance Optimized**: Uses Static Site Generation (SSG) with `generateStaticParams` for top routes, Server-Side Rendering (SSR), `<Suspense>` streaming, and fetch caching.
-- 📱 **Fully Responsive & Dark Mode Theme**: Deep atmospheric workspace background with neon gradient accents optimized for mobile, tablet, and desktop displays.
+- 🏠 **3D Holographic Showcase Grid**: Interactive Pokémon cards with realistic 3D mouse-tilt perspective, holographic sheen layer, dynamic lighting, and elemental aura glowing effects.
+- ❤️ **Persistent Favorites System**: Save and bookmark your favorite Pokémon with client-side `localStorage` state synchronization and a dedicated "Favorites Only" view filter.
+- 🔊 **Native Audio Cries Player**: Listen to authentic Pokémon cries fetched directly from PokeAPI's sound library with animated equalizer wave feedback.
+- ⚔️ **Head-to-Head Battle Comparison**: Compare any 2 Pokémon side-by-side with individual stat bars, stat differential calculations, height/weight metrics, and automated battle superiority verdict.
+- 🛡️ **Elemental Type Weakness & Resistance Matrix**: Automated calculation of 2x damage weaknesses, 0.5x resistances, and 0x immunities based on single or dual Pokémon typing.
+- 🌍 **Generation & Region Selector**: Switch seamlessly between Generation I (Kanto), Gen II (Johto), Gen III (Hoenn), Gen IV (Sinnoh), and Gen V (Unova).
+- ✨ **Shiny Form Toggle**: Instant toggle between standard artwork and rare Shiny sprite variations.
+- 🔍 **Spotlight Keyboard Search**: Instant search filter with keyboard shortcut (`/`) focusing, live fallback PokeAPI search for un-cached Pokémon, and elemental type pills.
+- ⚡ **SSG & Performance Optimized**: Pre-built static pages via `generateStaticParams` for Gen 1 Pokémon delivering instant 0ms page transitions, custom dynamic SEO metadata, and `<Suspense>` streaming.
 
 ---
 
 ## 🛠️ Tech Stack
 
 - **Framework**: [Next.js 16 (App Router & Turbopack)](https://nextjs.org/)
-- **Language**: [TypeScript](https://www.typescriptlang.org/)
+- **Language**: [TypeScript](https://www.typescriptlang.org/) (Strict Mode)
 - **Styling**: [Tailwind CSS v4](https://tailwindcss.com/)
 - **Typography**: Google Fonts (`Outfit` & `Space Grotesk`)
-- **Data Source**: [PokeAPI](https://pokeapi.co/)
+- **Data Source**: [PokeAPI](https://pokeapi.co/) & PokeAPI Cries Library
 
 ---
 
@@ -30,29 +34,32 @@ A modern, responsive, and visually stunning **Pokemon Explorer** web application
 
 ```text
 src/
-├── app/                    # Next.js App Router routes & layouts
-│   ├── globals.css         # Base styles, 3D card perspective & Tailwind setup
-│   ├── layout.tsx          # Root layout with Outfit & Space Grotesk Google Fonts
-│   ├── page.tsx            # Homepage (SSR & SSG)
+├── app/                    # Next.js App Router pages, static params & SEO metadata
+│   ├── globals.css         # 3D perspective transforms, holographic sheen & keyframes
+│   ├── layout.tsx          # Root font providers & theme layout
+│   ├── page.tsx            # Homepage with SSG data pre-fetching
 │   └── pokemon/
 │       └── [id]/
-│           └── page.tsx    # Dynamic Pokemon Detail route (SSG / SSR)
+│           └── page.tsx    # Dynamic SSG detail routes with static params pre-generation
 │
-├── components/             # Reusable UI components
-│   ├── common/             # Common UI (Loading, ErrorMessage, PokeballWatermark)
-│   ├── pokemon/            # Pokemon UI (Card, Grid, Details, Stats, About, Evolution, Moves, TypeFilter)
-│   └── search/             # Spotlight search input component
+├── components/             # Modular React UI components
+│   ├── common/             # AudioCryButton, Loading, ErrorMessage, PokeballWatermark
+│   ├── pokemon/            # Card, Grid, ExplorerView, CompareModal, WeaknessTab, Stats, Evolution
+│   └── search/             # Keyboard-driven search input
 │
-├── lib/                    # API integration & Constants
-│   ├── api/
-│   │   └── pokeapi.ts      # Native fetch wrapper for PokeAPI
-│   └── constants.ts        # Dual-gradient elemental type color maps
+├── hooks/                  # Custom React hooks
+│   └── useFavorites.ts     # Persistent local storage synchronization hook
 │
-├── types/                  # Strict TypeScript interface definitions
+├── lib/                    # API wrappers & Constants
+│   ├── api/pokeapi.ts      # PokéAPI native fetcher & evolution chain tree parser
+│   └── constants.ts        # HSL type color theme map & default parameters
+│
+├── types/                  # Strict TypeScript interfaces
 │   └── pokemon.ts
 │
-└── utils/                  # Helper utilities
-    └── formatPokemonName.ts# String formatting helper
+└── utils/                  # Domain calculation logic
+    ├── formatPokemonName.ts# String & ID formatting helpers
+    └── typeMatrix.ts       # Elemental weakness, resistance & immunity matrix calculator
 ```
 
 ---
@@ -86,14 +93,14 @@ src/
 
 ---
 
-## 🧪 Build & Type Check
+## 🧪 Verification & Build
 
-To check for TypeScript errors:
+Check for TypeScript type safety:
 ```bash
 npx tsc --noEmit
 ```
 
-To build for production:
+Build for production (generates static pages for top 151 Pokémon):
 ```bash
 npm run build
 npm run start

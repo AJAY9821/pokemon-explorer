@@ -53,11 +53,10 @@ async function PokemonDetailContent({ params }: PageProps) {
 
 export default function PokemonDetailPage({ params }: PageProps) {
   return (
-    <main className="min-h-screen bg-slate-50 dark:bg-slate-900 py-10 px-4 sm:px-6 lg:px-8">
+    <main className="w-full min-h-screen bg-[#080C14] text-slate-100 m-0 p-0 overflow-x-hidden">
       <Suspense fallback={<Loading />}>
         <PokemonDetailContent params={params} />
       </Suspense>
     </main>
   );
 }
-
