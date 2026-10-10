@@ -7,9 +7,6 @@ import {
   EvolutionNode,
 } from "@/types/pokemon";
 
-/**
- * Fetch a paginated list of Pokemon with summary card data
- */
 export async function fetchPokemonList(
   limit: number = DEFAULT_PAGE_LIMIT,
   offset: number = 0
@@ -52,10 +49,6 @@ export async function fetchPokemonList(
   }
 }
 
-/**
- * Basic fetch for single Pokemon raw object
- */
-
 export async function fetchPokemonDetailBasic(idOrName: string): Promise<PokemonDetail> {
   const cleanIdOrName = String(idOrName).trim().toLowerCase();
   const res = await fetch(`${POKEAPI_BASE_URL}/pokemon/${cleanIdOrName}`, {
@@ -69,9 +62,6 @@ export async function fetchPokemonDetailBasic(idOrName: string): Promise<Pokemon
   return res.json();
 }
 
-/**
- * Fetch full details for a Pokemon including species flavor text and evolution chain
- */
 export async function fetchPokemonDetail(idOrName: string): Promise<PokemonDetail> {
   const detail = await fetchPokemonDetailBasic(idOrName);
 
@@ -90,9 +80,6 @@ export async function fetchPokemonDetail(idOrName: string): Promise<PokemonDetai
   return detail;
 }
 
-/**
- * Fetch Species data (flavor text, genus, egg groups, gender rate, evolution chain URL)
- */
 export async function fetchPokemonSpecies(idOrName: number | string): Promise<PokemonSpecies> {
   const res = await fetch(`${POKEAPI_BASE_URL}/pokemon-species/${idOrName}`, {
     next: { revalidate: 86400 },
@@ -104,7 +91,6 @@ export async function fetchPokemonSpecies(idOrName: number | string): Promise<Po
 
   const data = await res.json();
 
-  // Find first English flavor text entry & clean formatting characters
   const englishFlavor = data.flavor_text_entries?.find(
     (f: { language: { name: string }; flavor_text: string }) => f.language.name === "en"
   );
@@ -128,9 +114,6 @@ export async function fetchPokemonSpecies(idOrName: number | string): Promise<Po
   };
 }
 
-/**
- * Parse PokeAPI evolution chain tree recursively
- */
 export async function fetchEvolutionChain(url: string): Promise<EvolutionNode[]> {
   const res = await fetch(url, { next: { revalidate: 86400 } });
   if (!res.ok) return [];
@@ -168,9 +151,6 @@ export async function fetchEvolutionChain(url: string): Promise<EvolutionNode[]>
   return nodes;
 }
 
-/**
- * Fetch Pokémon list filtered by elemental type directly from PokeAPI
- */
 export async function fetchPokemonByType(typeName: string): Promise<PokemonCardData[]> {
   try {
     const res = await fetch(`${POKEAPI_BASE_URL}/type/${typeName.toLowerCase()}`, {
@@ -182,7 +162,6 @@ export async function fetchPokemonByType(typeName: string): Promise<PokemonCardD
     const data = await res.json();
     const pokemonEntries: Array<{ pokemon: { name: string; url: string } }> = data.pokemon || [];
 
-    // Limit to top 36 entries for crisp performance
     const topEntries = pokemonEntries.slice(0, 36);
 
     const listPromises = topEntries.map(async (entry) => {

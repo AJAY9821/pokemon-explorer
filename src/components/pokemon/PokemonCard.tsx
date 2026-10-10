@@ -107,21 +107,17 @@ export function PokemonCard({ pokemon, onCompare }: PokemonCardProps) {
           }}
           className={`group relative flex flex-col justify-between overflow-hidden rounded-3xl p-6 preserve-3d border ${colorTheme.border} ${colorTheme.bg} cursor-pointer min-h-[230px]`}
         >
-          {/* Holographic Sheen Layer */}
           <div className="pointer-events-none absolute inset-0 holographic-sheen opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20" />
 
-          {/* Ambient Aura */}
           <div
             className="absolute -top-10 -left-10 w-44 h-44 rounded-full blur-2xl opacity-30 group-hover:opacity-70 transition-opacity duration-500 pointer-events-none"
             style={{ backgroundColor: colorTheme.hex }}
           />
 
-          {/* Watermark Pokeball */}
           <div className="absolute -right-6 -bottom-6 text-white/10 group-hover:text-white/20 transition-all duration-500 pointer-events-none group-hover:scale-110 group-hover:rotate-12">
             <PokeballWatermark size={170} opacity={0.15} />
           </div>
 
-          {/* Header: ID, Cry Button & Favorite Heart */}
           <div
             className="relative z-30 flex items-center justify-between mb-2"
             style={{ transform: "translateZ(20px)" }}
@@ -131,7 +127,6 @@ export function PokemonCard({ pokemon, onCompare }: PokemonCardProps) {
             </span>
 
             <div className="flex items-center gap-1.5">
-              {/* Audio Cry Trigger */}
               <button
                 onClick={handleAudioClick}
                 title="Play Audio Cry"
@@ -144,7 +139,6 @@ export function PokemonCard({ pokemon, onCompare }: PokemonCardProps) {
                 🔊
               </button>
 
-              {/* Compare Button Trigger */}
               {onCompare && (
                 <button
                   onClick={handleCompareClick}
@@ -155,7 +149,6 @@ export function PokemonCard({ pokemon, onCompare }: PokemonCardProps) {
                 </button>
               )}
 
-              {/* Heart Favorite Toggle */}
               <button
                 onClick={handleFavoriteClick}
                 title={favorite ? "Remove from Favorites" : "Add to Favorites"}
@@ -182,7 +175,6 @@ export function PokemonCard({ pokemon, onCompare }: PokemonCardProps) {
             </div>
           </div>
 
-          {/* Content Layout */}
           <div className="relative z-10 grid grid-cols-12 items-center gap-2 mt-auto">
             <div
               className="col-span-6 space-y-3 transition-transform duration-300"
@@ -231,7 +223,6 @@ export function PokemonCard({ pokemon, onCompare }: PokemonCardProps) {
             </div>
           </div>
 
-          {/* Action Footer */}
           <div
             className="relative z-10 mt-3 pt-2 border-t border-white/10 flex items-center justify-between text-[11px] font-semibold text-white/70 group-hover:text-white transition-colors"
             style={{ transform: "translateZ(15px)" }}

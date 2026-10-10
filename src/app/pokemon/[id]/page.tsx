@@ -12,17 +12,11 @@ interface PageProps {
   }>;
 }
 
-/**
- * Pre-generate static params for the first 151 Pokemon for SSG speed optimization
- */
 export async function generateStaticParams() {
   const ids = Array.from({ length: 151 }, (_, i) => ({ id: String(i + 1) }));
   return ids;
 }
 
-/**
- * Dynamic Metadata for SEO
- */
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { id } = await params;
   try {

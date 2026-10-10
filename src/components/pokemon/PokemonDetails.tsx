@@ -84,7 +84,6 @@ export function PokemonDetails({ pokemon }: PokemonDetailsProps) {
 
 
       <div className="relative z-10 max-w-5xl mx-auto space-y-8">
-        {/* Top Header Controls (Back Button, Cry Button, Compare & Favorite) */}
         <div className="flex flex-wrap items-center justify-between gap-3">
           <Link
             href="/"
@@ -102,10 +101,8 @@ export function PokemonDetails({ pokemon }: PokemonDetailsProps) {
           </Link>
 
           <div className="flex flex-wrap items-center gap-2.5">
-            {/* Audio Cry Button */}
             <AudioCryButton pokemonId={pokemon.id} pokemonName={pokemon.name} size="md" />
 
-            {/* Compare Tool Trigger */}
             <button
               onClick={() => setIsCompareOpen(true)}
               className="px-3.5 py-1.5 rounded-2xl bg-slate-900/90 border border-slate-700/60 text-slate-300 hover:text-white hover:border-slate-500 transition-all text-xs font-black uppercase tracking-wider flex items-center gap-1.5 shadow-md"
@@ -114,7 +111,6 @@ export function PokemonDetails({ pokemon }: PokemonDetailsProps) {
               <span>Compare</span>
             </button>
 
-            {/* Shiny Form Toggle */}
             <button
               onClick={() => setIsShiny(!isShiny)}
               className={`px-3.5 py-1.5 rounded-2xl text-xs font-black tracking-wider uppercase flex items-center gap-1.5 transition-all duration-300 border ${
@@ -127,7 +123,6 @@ export function PokemonDetails({ pokemon }: PokemonDetailsProps) {
               <span>{isShiny ? "Shiny On" : "Shiny"}</span>
             </button>
 
-            {/* Favorite Heart Toggle */}
             <button
               onClick={() => toggleFavorite(pokemon.id)}
               className={`p-2 rounded-2xl border transition-all ${
@@ -148,16 +143,13 @@ export function PokemonDetails({ pokemon }: PokemonDetailsProps) {
           </div>
         </div>
 
-        {/* Hero Showcase Stage */}
         <div
           className={`relative rounded-3xl p-4 sm:p-8 md:p-10 border ${colorTheme.border} ${colorTheme.bg} shadow-2xl overflow-hidden`}
         >
-          {/* Background Watermark Pokeball */}
           <div className="absolute -right-10 -bottom-10 text-white/10 pointer-events-none rotate-12">
             <PokeballWatermark size={440} opacity={0.14} />
           </div>
 
-          {/* Flame Embers */}
           {isFlyingOrDragonOrFire && (
             <div className="absolute inset-0 pointer-events-none overflow-hidden z-0">
               <div className="absolute bottom-4 left-1/3 w-3 h-3 rounded-full bg-orange-400/70 blur-xs animate-rise-ember-1" />

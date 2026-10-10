@@ -54,9 +54,7 @@ export function TypeFilterBar({
 
   return (
     <div className="space-y-4 w-full">
-      {/* Top Filter Control Bar: Favorites & Generation Selector */}
       <div className="flex flex-wrap items-center justify-between gap-3 px-4 sm:px-6">
-        {/* Favorites Only Toggle */}
         {onToggleFavoritesOnly && (
           <button
             onClick={onToggleFavoritesOnly}
@@ -74,7 +72,6 @@ export function TypeFilterBar({
           </button>
         )}
 
-        {/* Region / Generation Selector Tabs */}
         {onSelectGen && (
           <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-none max-w-full py-1">
             <span className="text-[10px] font-black uppercase text-slate-500 tracking-wider mr-1 shrink-0">
@@ -107,10 +104,8 @@ export function TypeFilterBar({
         )}
       </div>
 
-      {/* Horizontal Scrolling Elemental Type Pills */}
       <div className="w-full overflow-x-auto py-2.5 scrollbar-none">
         <div className="inline-flex items-center space-x-3 px-4 sm:px-6 min-w-max">
-          {/* "All Pokémon" Reset Pill */}
           <button
             onClick={() => onSelectType(null)}
             className={`px-5 py-2.5 rounded-full text-xs font-black tracking-wider transition-all duration-300 uppercase whitespace-nowrap shrink-0 flex items-center gap-2 border ${

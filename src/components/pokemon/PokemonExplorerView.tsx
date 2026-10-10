@@ -192,9 +192,7 @@ export function PokemonExplorerView({ initialPokemonList }: PokemonExplorerViewP
 
   return (
     <div className="space-y-8">
-      {/* Top Bar Navigation & Hero Title Header */}
       <div className="relative pt-2">
-        {/* Top Left Navigation Button at Red Line Position */}
         {isFiltered && (
           <div className="sm:absolute sm:top-2 sm:left-0 z-20 mb-4 sm:mb-0 animate-fade-in">
             <button
@@ -214,11 +212,10 @@ export function PokemonExplorerView({ initialPokemonList }: PokemonExplorerViewP
           </div>
         )}
 
-        {/* Hero Section */}
         <div className="text-center space-y-4 pt-2 max-w-3xl mx-auto">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-900/80 border border-slate-700/60 backdrop-blur-md shadow-inner text-xs font-bold text-blue-400 uppercase tracking-widest">
             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
-            Interactive 3D Pokédex Showcase
+            Pokédex Explorer
           </div>
 
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight text-white leading-tight">
@@ -229,19 +226,17 @@ export function PokemonExplorerView({ initialPokemonList }: PokemonExplorerViewP
           </h1>
 
           <p className="text-sm sm:text-base text-slate-400 font-medium leading-relaxed max-w-xl mx-auto">
-            Discover stats, elemental type match-ups, movesets, and evolution chains with interactive 3D holographic cards.
+            Discover stats, elemental type match-ups, movesets, and evolution chains with interactive cards.
           </p>
         </div>
       </div>
 
-      {/* Search Bar */}
       <SearchBar
         searchQuery={searchQuery}
         onSearchChange={handleSearchChange}
         placeholder="Search Pokémon by name or ID (e.g., Pikachu or #025)..."
       />
 
-      {/* Filter Control Bar */}
       <TypeFilterBar
         selectedType={selectedType}
         onSelectType={handleSelectType}
